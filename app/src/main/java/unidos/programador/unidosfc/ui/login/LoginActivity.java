@@ -22,48 +22,34 @@ import unidos.programador.unidosfc.R;
 public class LoginActivity extends AppCompatActivity {
 
     private Button novoUsuario, entrar;
-    private TextInputLayout usuario, senha;
+    private TextInputLayout inputUsuario, inputSenha;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        usuario = findViewById(R.id.usuario);
-        senha = findViewById(R.id.senha);
+        inputUsuario    = findViewById(R.id.usuario);
+        inputSenha      = findViewById(R.id.senha);
 
         entrar = findViewById(R.id.entrar);
         entrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                // Limpa o erro do campo.
-                usuario.setError(null);
-                usuario.setErrorEnabled(false);
-                senha.setError(null);
-                senha.setErrorEnabled(false);
+                if (validaUsuario() && validaSenha()) {
 
-                // Captura a informação digitada.
-                final String lsUsuario = usuario.getEditText().getText().toString();
-                final String lsSenha = senha.getEditText().getText().toString();
+                    // Captura a informação digitada.
+                    final String lsUsuario = inputUsuario.getEditText().getText().toString();
+                    final String lsSenha = inputSenha.getEditText().getText().toString();
 
-                // Faz as validações.
-                if (lsUsuario.isEmpty()) {
-                    usuario.setError("Campo usuário obrigatório");
-                    usuario.setErrorEnabled(true);
-                }
-                else if (lsSenha.isEmpty()) {
-                    senha.setError("Campo senha obrigatório");
-                    senha.setErrorEnabled(true);
-                }
-                else {
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("usuarios");
-                    Query checkUser = reference.orderByChild("usuario").equalTo(lsUsuario);
+                    Query checkUser = reference.orderByChild("inputUsuario").equalTo(lsUsuario);
                     checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
-                                final String senhaDB = dataSnapshot.child(usuario.getEditText().getText().toString()).child("senha").getValue(String.class);
+                                final String senhaDB = dataSnapshot.child(inputUsuario.getEditText().getText().toString()).child("inputSenha").getValue(String.class);
                                 if (lsSenha.equals(senhaDB)) {
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 }
@@ -88,6 +74,50 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, RegistroActivity.class));
             }
         });
+    }
 
+    private boolean validaUsuario() {
+        final String valor = inputUsuario.getEditText().getText().toString();
+        final String semEspaco = "\\A\\w{4,20}\\z";
+        inputUsuario.setError(null);
+        inputUsuario.setErrorEnabled(false);
+
+        if (valor.isEmpty()) {
+            inputUsuario.setErrorEnabled(true);
+            inputUsuario.setError("Campo usuário não pode ser vazio");
+            return false;
+        }
+        else if (valor.length() >= 15) {
+            inputUsuario.setErrorEnabled(true);
+            inputUsuario.setError("Campo usuário muito longo");
+            return false;
+        }
+        else if (!valor.matches(semEspaco)) {
+            inputUsuario.setErrorEnabled(true);
+            inputUsuario.setError("Espaços não é permitido para o campo usuário");
+            return false;
+        }
+        else {
+            inputUsuario.setErrorEnabled(false);
+            inputUsuario.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validaSenha() {
+        final String valor = inputSenha.getEditText().getText().toString();
+        inputSenha.setError(null);
+        inputSenha.setErrorEnabled(false);
+
+        if (valor.isEmpty()) {
+            inputSenha.setErrorEnabled(true);
+            inputSenha.setError("Campo inputSenha não pode ser vazio");
+            return false;
+        }
+        else {
+            inputSenha.setErrorEnabled(false);
+            inputSenha.setError(null);
+            return true;
+        }
     }
 }
