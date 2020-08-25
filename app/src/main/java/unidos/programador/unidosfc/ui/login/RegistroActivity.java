@@ -18,6 +18,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import unidos.programador.unidosfc.MainActivity;
 import unidos.programador.unidosfc.R;
 import unidos.programador.unidosfc.database.UsuarioModel;
@@ -30,6 +33,12 @@ public class RegistroActivity extends AppCompatActivity {
     private TextInputLayout email;
     private TextInputLayout telefone;
     private TextInputLayout senha;
+    private TextInputLayout confSenha;
+    private static final String EMAIL_PATTERN =
+            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+    private static final Pattern pattern = Pattern.compile(EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +50,15 @@ public class RegistroActivity extends AppCompatActivity {
         email = findViewById(R.id.email);
         telefone = findViewById(R.id.telefone);
         senha = findViewById(R.id.senha);
+        confSenha = findViewById(R.id.confirmacaoSenha);
 
         cadastrar = findViewById(R.id.cadastrar);
         cadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//teste
+                if (validaEmail() && validaUsuario() && validaSenha()&&validaConfirmaSenha() &&validaNome() && validaTelefone()) {
+
+
                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference("usuarios");
                 Query checkUser = reference.orderByChild("usuario").equalTo(usuario.getEditText().getText().toString());
                 checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -110,6 +122,149 @@ public class RegistroActivity extends AppCompatActivity {
                     }
                 });
             }
+            }
         });
+    }
+
+    private boolean validaUsuario() {
+        final String valor = usuario.getEditText().getText().toString();
+        final String semEspaco = "\\A\\w{4,20}\\z";
+        usuario.setError(null);
+        usuario.setErrorEnabled(false);
+
+        if (valor.isEmpty()) {
+            usuario.setErrorEnabled(true);
+            usuario.setError("Campo usuário não pode ser vazio");
+            return false;
+        }
+        else if (valor.length() >= 15) {
+            usuario.setErrorEnabled(true);
+            usuario.setError("Campo usuário muito longo");
+            return false;
+        }
+        else if (!valor.matches(semEspaco)) {
+            usuario.setErrorEnabled(true);
+            usuario.setError("Espaços não é permitido para o campo usuário");
+            return false;
+        }
+        else {
+            usuario.setErrorEnabled(false);
+            usuario.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validaSenha() {
+        final String valor = senha.getEditText().getText().toString();
+        senha.setError(null);
+        senha.setErrorEnabled(false);
+
+        if (valor.isEmpty()) {
+            senha.setErrorEnabled(true);
+            senha.setError("Campo senha não pode ser vazio");
+            return false;
+        }
+        else if (valor.length() < 6) {
+            senha.setErrorEnabled(true);
+            senha.setError("Campo senha deve ter pelo menos 6 caracteres");
+            return false;
+        }
+
+        else {
+            senha.setErrorEnabled(false);
+            senha.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validaConfirmaSenha() {
+        final String valor = confSenha.getEditText().getText().toString();
+        final String valorSenha = senha.getEditText().getText().toString();
+        confSenha.setError(null);
+        confSenha.setErrorEnabled(false);
+
+        if (valor.isEmpty()) {
+            confSenha.setErrorEnabled(true);
+            confSenha.setError("Campo inputSenha não pode ser vazio");
+            return false;
+        }
+        else if (!valorSenha.equals(valor))
+        {
+            confSenha.setErrorEnabled(true);
+            confSenha.setError("Senhas não coincidem");
+            return false;
+        }
+        else {
+            senha.setErrorEnabled(false);
+            senha.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validaTelefone() {
+        final String valor = telefone.getEditText().getText().toString();
+        telefone.setError(null);
+        telefone.setErrorEnabled(false);
+
+        if (valor.isEmpty()) {
+            telefone.setErrorEnabled(true);
+            telefone.setError("Campo telefone não pode ser vazio");
+            return false;
+        }
+        else if (valor.length() != 11) {
+            telefone.setErrorEnabled(true);
+            telefone.setError("Campo telefone deve ser composto de (00)00000-0000");
+            return false;
+        }
+        else {
+            telefone.setErrorEnabled(false);
+            telefone.setError(null);
+            return true;
+        }
+    }
+    private boolean validaNome() {
+        final String valor = nome.getEditText().getText().toString();
+        nome.setError(null);
+        nome.setErrorEnabled(false);
+
+        if (valor.isEmpty()) {
+            nome.setErrorEnabled(true);
+            nome.setError("Campo nome não pode ser vazio");
+            return false;
+        }
+        else if (valor.length() < 11) {
+            nome.setErrorEnabled(true);
+            nome.setError("Por favor, digite seu nome completo");
+            return false;
+        }
+        else {
+            nome.setErrorEnabled(false);
+            nome.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validaEmail() {
+        final String valor = email.getEditText().getText().toString();
+        email.setError(null);
+        email.setErrorEnabled(false);
+        Matcher matcher = pattern.matcher(valor);
+
+        if (valor.isEmpty()) {
+            email.setErrorEnabled(true);
+            email.setError("Campo nome não pode ser vazio");
+            return false;
+        }
+        else if (!matcher.matches()) {
+
+            email.setErrorEnabled(true);
+            email.setError("Digite um e-mail válido");
+            return false;
+        }
+        else {
+            email.setErrorEnabled(false);
+            email.setError(null);
+            return true;
+        }
     }
 }
