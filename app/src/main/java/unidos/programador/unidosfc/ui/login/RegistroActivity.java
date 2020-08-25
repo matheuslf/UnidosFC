@@ -48,7 +48,7 @@ public class RegistroActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference("usuarios");
-                Query checkUser = reference.orderByChild("usuarios").equalTo(usuario.getEditText().toString());
+                Query checkUser = reference.orderByChild("usuario").equalTo(usuario.getEditText().toString());
                 checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -96,7 +96,16 @@ public class RegistroActivity extends AppCompatActivity {
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                         if (databaseError.getMessage() != null) {
-
+                            new SweetAlertDialog(RegistroActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                    .setTitleText("Erro")
+                                    .setContentText("Falha ao consultar o usuário!")
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            sweetAlertDialog.dismissWithAnimation();
+                                        }
+                                    })
+                                    .show();
                         }
                     }
                 });
