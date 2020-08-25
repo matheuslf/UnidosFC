@@ -48,7 +48,7 @@ public class RegistroActivity extends AppCompatActivity {
             public void onClick(View v) {
 //teste
                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference("usuarios");
-                Query checkUser = reference.orderByChild("usuario").equalTo(usuario.getEditText().toString());
+                Query checkUser = reference.orderByChild("usuario").equalTo(usuario.getEditText().getText().toString());
                 checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
