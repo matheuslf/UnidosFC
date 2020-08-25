@@ -46,7 +46,7 @@ public class RegistroActivity extends AppCompatActivity {
         cadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+//teste
                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference("usuarios");
                 Query checkUser = reference.orderByChild("usuario").equalTo(usuario.getEditText().toString());
                 checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
