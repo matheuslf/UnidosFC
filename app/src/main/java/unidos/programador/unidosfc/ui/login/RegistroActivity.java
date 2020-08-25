@@ -76,7 +76,7 @@ public class RegistroActivity extends AppCompatActivity {
                                             email.getEditText().getText().toString(),
                                             senha.getEditText().getText().toString()
                                     );
-                            reference.child(telefone.getEditText().getText().toString()).setValue(user);
+                            reference.child(usuario.getEditText().getText().toString()).setValue(user);
 
                             // Mostra a mensagem de sucesso.
                             new SweetAlertDialog(RegistroActivity.this, SweetAlertDialog.SUCCESS_TYPE)

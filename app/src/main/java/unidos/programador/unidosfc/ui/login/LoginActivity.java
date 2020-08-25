@@ -44,12 +44,12 @@ public class LoginActivity extends AppCompatActivity {
                     final String lsSenha = inputSenha.getEditText().getText().toString();
 
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("usuarios");
-                    Query checkUser = reference.orderByChild("inputUsuario").equalTo(lsUsuario);
+                    Query checkUser = reference.orderByChild("usuario").equalTo(lsUsuario);
                     checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
-                                final String senhaDB = dataSnapshot.child(inputUsuario.getEditText().getText().toString()).child("inputSenha").getValue(String.class);
+                                final String senhaDB = dataSnapshot.child(inputUsuario.getEditText().getText().toString()).child("senha").getValue(String.class);
                                 if (lsSenha.equals(senhaDB)) {
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 }
