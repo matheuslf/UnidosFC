@@ -18,6 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import unidos.programador.unidosfc.MainActivity;
 import unidos.programador.unidosfc.R;
+import unidos.programador.unidosfc.ui.cadastros.CadJogosActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -71,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         novoUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, RegistroActivity.class));
+                startActivity(new Intent(LoginActivity.this, CadJogosActivity.class));
             }
         });
     }

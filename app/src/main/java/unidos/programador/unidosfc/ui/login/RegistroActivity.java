@@ -57,8 +57,6 @@ public class RegistroActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (validaEmail() && validaUsuario() && validaSenha()&&validaConfirmaSenha() &&validaNome() && validaTelefone()) {
-
-
                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference("usuarios");
                 Query checkUser = reference.orderByChild("usuario").equalTo(usuario.getEditText().getText().toString());
                 checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -86,7 +84,8 @@ public class RegistroActivity extends AppCompatActivity {
                                             nome.getEditText().getText().toString(),
                                             usuario.getEditText().getText().toString(),
                                             email.getEditText().getText().toString(),
-                                            senha.getEditText().getText().toString()
+                                            senha.getEditText().getText().toString(),
+                                            false
                                     );
                             reference.child(usuario.getEditText().getText().toString()).setValue(user);
 

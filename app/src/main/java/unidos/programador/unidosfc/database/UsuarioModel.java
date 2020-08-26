@@ -7,17 +7,19 @@ public class UsuarioModel {
     private String usuario;
     private String email;
     private String senha;
+    private boolean adm;
 
     public UsuarioModel() {
 
     }
 
-    public UsuarioModel(final long id, final String nome, final String usuario, final String email, final String senha) {
+    public UsuarioModel(final long id, final String nome, final String usuario, final String email, final String senha, final boolean adm) {
         this.id = id;
         this.nome = nome;
         this.usuario = usuario;
         this.email = email;
         this.senha = senha;
+        this.adm = adm;
     }
 
     public long getId() {
@@ -58,5 +60,13 @@ public class UsuarioModel {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public boolean isAdm() {
+        return adm;
+    }
+
+    public void setAdm(boolean adm) {
+        this.adm = adm;
     }
 }
