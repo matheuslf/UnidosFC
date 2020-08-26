@@ -15,7 +15,7 @@ public class TabelaJogosModel {
 
     }
 
-    public TabelaJogosModel(long id, boolean emCasa, String local, String time, String timeAdversario, Date dtJogo, Time hrJogo) {
+    public TabelaJogosModel(boolean emCasa, String local, String time, String timeAdversario, Date dtJogo, Time hrJogo) {
         this.emCasa = emCasa;
         this.local = local;
         this.time = time;
