@@ -30,7 +30,7 @@
             android:name=".ui.login.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
-            android:name=".MainActivity" />
+            android:name=".MainActivity"/>
         <activity
             android:name=".ui.cadastros.CadJogosActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />

@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="unidos.programador.unidosfc.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
+        android:name="unidos.programador.unidosfc.ui.tabela.TabelaFragment"
+        android:label="@string/title_tabela"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="unidos.programador.unidosfc.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_perfil"
+        android:name="unidos.programador.unidosfc.ui.perfil.PerfilFragment"
+        android:label="@string/title_perfil"
+        tools:layout="@layout/fragment_perfil" />
 </navigation>
